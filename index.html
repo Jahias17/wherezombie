@@ -8,16 +8,16 @@
   <title>My page</title>
    <style>
 #zombie_map {
-    width: 600px;
-    height: 400px;
+    width: 1200px;
+    height: 800px;
     left: 0;
     top: 0;  
     background-color: grey;
 }
 </style>
 </head>
-<body>
-    My zombie map
+<body style="background-color:black;">
+    <h1 style="color:white;"><center>My zombie map</center></h1>
 <div id="zombie_map">
     
     
@@ -30,6 +30,7 @@
   </script>
     <script>
     var zombie_map;
+    var old_position;
     var data = ` 43.72000565697033 -79.75862689024206 zombie.png
  43.745890037654824 -79.7684661408116 zombie.png
  43.72554885963196 -79.79661860663191 zombie.png
@@ -73,17 +74,25 @@
                 map: zombie_map
             });
             all_markers.push(markers);
-
             
+                       
         }
+        var old_position = new google.maps.Marker({
+                position: {lat: 43.668657, lng: -79.827224},
+                icon: "player.png",
+                map: zombie_map
+            });
     }
         function set_my_position(position) {
+            old_position.setMap(null);
             var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             var marker = new google.maps.Marker({
                 position: pos,
                 icon: "player.png",
                 map: zombie_map
             });
+            old_position = marker; 
+            
         }
 
      
