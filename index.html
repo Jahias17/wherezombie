@@ -23,26 +23,41 @@
     
     
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBowCYJw0-_7VmEtwU560_5s0PYE94MoLo&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBowCYJw0-_7VmEtwU560_5s0PYE94MoLo&callback=initMap&libraries=geometry">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   </script>
     <script>
     var zombie_map;
+    var tolerance = 10;
     var old_position;
     var player = "player.png"
-    var data = ` 43.72000565697033 -79.75862689024206 zombie.png
- 43.745890037654824 -79.7684661408116 zombie.png
- 43.72554885963196 -79.79661860663191 zombie.png
- 43.716616403725624 -79.78769221503035 zombie.png
- 43.728029861037264 -79.73619380194441 zombie.png
- 43.75209024187673 -79.7355071564366 zombie.png
- 43.74018528251941 -79.75267329413191 zombie.png
- 43.72083467385928 -79.77704920965925 hospital.png
- 43.74713012988083 -79.78803553778425 hospital.png
- 43.71984216642742 -79.7355071564366 hospital.png
- 43.7089234995503 -79.75885310370222 hospital.png
+    var data = ` 43.66912878813386 -79.82497407171718 zombie.png
+ 43.67024630249919 -79.81819344732753 zombie.png
+ 43.672419187535155 -79.82179833624355 zombie.png
+ 43.6756628986085 -79.82120990753174 zombie.png
+ 43.67616056052087 -79.82428742620937 zombie.png
+ 43.67634679253808 -79.82763482305995 zombie.png
+ 43.670728539082454 -79.82299996588222 zombie.png
+ 43.668834976046966 -79.82158375952235 zombie.png
+ 43.67364772753242 -79.82418174948077 zombie.png
+ 43.671366242883785 -79.82647772039752 hospital.png
+ 43.67124207796543 -79.82709999288898 hospital.png
+ 43.66936405225037 -79.8234307309566 hospital.png
+ 43.668184435804335 -79.82315178121905 hospital.png
+ 43.66585754604962 -79.8274239423755 hospital.png
+ 43.66765807374198 -79.83017052440675 hospital.png
+ 43.66877561548992 -79.83317459850343 hospital.png
+ 43.66722346855419 -79.82527817516359 hospital.png
+ 43.66908604006065 -79.82776726512941 weapons.png
+ 43.67026563878745 -79.83077133922609 weapons.png
+ 43.67510795904016 -79.82811058788332 weapons.png
+ 43.67448717058596 -79.81712425975832 weapons.png
+ 43.676225362074334 -79.81412018566164 weapons.png
+ 43.6735559758635 -79.81532181530031 weapons.png
+ 43.667347641786115 -79.82021416454347 weapons.png
+
 `;
     var markers = data.split("\n");
     var all_markers = [];
@@ -84,6 +99,9 @@
                 map: zombie_map
             });
     }
+        
+        
+        
         function set_my_position(position) {
             old_position.setMap(null);
             var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -92,9 +110,24 @@
                 icon: player,
                 map: zombie_map
             });
+            
             old_position = marker; 
             
-        }
+              for(var i=0; i < marker.length; i++){
+                  document.write(marker[i] + "<br>");
+                var distance = google.maps.geometry.spherical.computeDistanceBetween(pos, all_markers[i].getPosition());
+                
+             if( distance < tolerance ){
+    var what_is_it = all_markers[i].getIcon();
+                 what_is_it = what_is_it.replace(".png", "");
+                 alert("Found the " + what_is_it );
+}   
+                all_markers[i].setup(null)  ;      
+                
+}
+                }
+            
+        
 
      
 </script>
